@@ -1,5 +1,6 @@
 package site.wijerathne.harshana.backend.service.admin.rooms;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,6 +11,7 @@ import site.wijerathne.harshana.backend.dto.RoomsResponseDto;
 import site.wijerathne.harshana.backend.entity.Room;
 import site.wijerathne.harshana.backend.repository.RoomRepository;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public RoomsResponseDto getAllRooms(int pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber, 6);
+        Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<Room> roomPage = roomRepository.findAll(pageable);
 
         RoomsResponseDto roomsResponseDto = new RoomsResponseDto();
@@ -47,7 +49,31 @@ public class RoomServiceImpl implements RoomService {
 
     }
 
+    @Override
+    public RoomDto getRoomById(Long id) {
+        Optional<Room> optionalRoom = roomRepository.findById(id);
+        if(optionalRoom.isPresent()){
+            return optionalRoom.get().getRoomDto();
+        }else {
+            throw new EntityNotFoundException("Room Not Present");
+        }
 
+    }
+
+    public boolean updateRoom(Long id ,RoomDto roomDto) {
+        Optional<Room> optionalRoom = roomRepository.findById(id);
+        if(optionalRoom.isPresent()){
+            Room existingRoom = optionalRoom.get();
+
+            existingRoom.setName(roomDto.getName());
+            existingRoom.setPrice(roomDto.getPrice());
+            existingRoom.setType(roomDto.getType());
+
+            roomRepository.save(existingRoom);
+            return true;
+        }
+        return false;
+    }
 
 
 }
