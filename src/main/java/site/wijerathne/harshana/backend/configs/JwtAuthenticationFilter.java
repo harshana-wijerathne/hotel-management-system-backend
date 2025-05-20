@@ -29,12 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-
-        System.out.println("Incoming Authorization header: " + authHeader);
-
         if(StringUtils.isEmpty(authHeader) || !StringUtils.startsWithIgnoreCase(authHeader, "Bearer ")) {
-
-            System.out.println("No Bearer token found, continuing chain");
             filterChain.doFilter(request, response);
             return;
         }

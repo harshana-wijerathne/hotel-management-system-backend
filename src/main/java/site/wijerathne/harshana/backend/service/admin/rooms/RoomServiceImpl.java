@@ -14,7 +14,6 @@ public class RoomServiceImpl implements RoomService {
     public boolean postRoom(RoomDto roomDto) {
         try{
             Room room = new Room();
-            System.out.println("Room Instance created");
             room.setName(roomDto.getName());
             room.setPrice(roomDto.getPrice());
             room.setType(roomDto.getType());

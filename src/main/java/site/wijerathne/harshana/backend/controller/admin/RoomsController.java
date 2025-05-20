@@ -19,7 +19,6 @@ public class RoomsController {
 
     @PostMapping("/room")
     public ResponseEntity<?> postRoom(@RequestBody RoomDto roomDto) {
-        System.out.println("POST ROOM");
          boolean success = roomService.postRoom(roomDto);
         if (success) {
             return ResponseEntity.ok().build();
