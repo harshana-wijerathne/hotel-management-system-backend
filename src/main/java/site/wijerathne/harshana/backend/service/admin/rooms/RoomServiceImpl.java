@@ -75,5 +75,14 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
+    public boolean deleteRoom(Long id) {
+        Optional<Room> optionalRoom = roomRepository.findById(id);
+        if(optionalRoom.isPresent()){
+            roomRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
 
 }

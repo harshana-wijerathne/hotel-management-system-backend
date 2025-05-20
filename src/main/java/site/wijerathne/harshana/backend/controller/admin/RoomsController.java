@@ -52,4 +52,14 @@ public class RoomsController {
         }
     }
 
+    @DeleteMapping("/room/{id}")
+    public ResponseEntity<?> deleteRoom(@PathVariable Long id) {
+        boolean success = roomService.deleteRoom(id);
+        if (success) {
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

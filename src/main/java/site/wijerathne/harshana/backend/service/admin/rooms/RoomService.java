@@ -9,4 +9,5 @@ public interface RoomService {
 
     RoomDto getRoomById(Long id);
     public boolean updateRoom(Long id ,RoomDto roomDto);
+    public boolean deleteRoom(Long id);
 }
