@@ -28,7 +28,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservationResponseDto.setReservationDtoList(reservationPage.stream().map(Reservation::getReservationDto).collect(Collectors.toList()));
 
         reservationResponseDto.setPageNumber(reservationPage.getPageable().getPageNumber());
-        reservationResponseDto.setTotalPages(reservationResponseDto.getTotalPages());
+        reservationResponseDto.setTotalPages(reservationPage.getTotalPages());
         return reservationResponseDto;
     }
 }
