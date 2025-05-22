@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoomServiceImpl implements RoomService {
+public class RoomsServiceImpl implements RoomsService {
     private final RoomRepository roomRepository;
 
     public boolean postRoom(RoomDto roomDto) {
@@ -35,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public RoomsResponseDto getAllRooms(int pageNumber){
-        Pageable pageable = PageRequest.of(pageNumber, 20);
+        Pageable pageable = PageRequest.of(pageNumber, 8);
         Page<Room> roomPage = roomRepository.findAll(pageable);
 
         RoomsResponseDto roomsResponseDto = new RoomsResponseDto();
@@ -44,8 +44,6 @@ public class RoomServiceImpl implements RoomService {
         roomsResponseDto.setRooms(roomPage.stream().map(Room::getRoomDto).collect(Collectors.toList()));
 
         return roomsResponseDto;
-
-
 
     }
 

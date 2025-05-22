@@ -6,15 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.wijerathne.harshana.backend.dto.RoomDto;
-import site.wijerathne.harshana.backend.entity.Room;
-import site.wijerathne.harshana.backend.service.admin.rooms.RoomService;
+import site.wijerathne.harshana.backend.service.admin.rooms.RoomsService;
 
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class RoomsController {
 
-    private final RoomService roomService;
+    private final RoomsService roomService;
 
     @PostMapping("/room")
     public ResponseEntity<?> postRoom(@RequestBody RoomDto roomDto) {
