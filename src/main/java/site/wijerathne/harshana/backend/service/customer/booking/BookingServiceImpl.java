@@ -23,6 +23,9 @@ public class BookingServiceImpl implements BookingService {
     private final ReservationRepository reservationRepository;
 
     public boolean postReservation(ReservationDto reservationDto) {
+
+        System.out.println(reservationDto);
+
         Optional<User> optionalUser = userRepository.findById(reservationDto.getUserId());
         Optional<Room> optionalRoom = roomRepository.findById(reservationDto.getRoomId());
 
