@@ -2,10 +2,7 @@ package site.wijerathne.harshana.backend.controller.customer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import site.wijerathne.harshana.backend.dto.ReservationDto;
 import site.wijerathne.harshana.backend.service.customer.booking.BookingService;
 
@@ -22,6 +19,15 @@ public class BookingController {
             return ResponseEntity.ok().build();
         }else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/booking/{userId}/{pageNumber}")
+    public ResponseEntity<?> getAllBookingReservationByUser(@PathVariable Long userId, @PathVariable int pageNumber) {
+        try {
+            return ResponseEntity.ok(bookingService.getAllReservationByUser(userId, pageNumber));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body("Something went Wrong");
         }
     }
 }
