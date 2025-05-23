@@ -7,15 +7,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import site.wijerathne.harshana.backend.dto.ReservationResponseDto;
 import site.wijerathne.harshana.backend.entity.Reservation;
+import site.wijerathne.harshana.backend.entity.Room;
+import site.wijerathne.harshana.backend.enums.ReservationStatus;
 import site.wijerathne.harshana.backend.repository.ReservationRepository;
+import site.wijerathne.harshana.backend.repository.RoomRepository;
 
 import javax.swing.plaf.PanelUI;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
+    private final RoomRepository roomRepository;
 
     public static final int SEARCH_RESULT_PER_PAGE = 4;
 
@@ -30,5 +36,26 @@ public class ReservationServiceImpl implements ReservationService {
         reservationResponseDto.setPageNumber(reservationPage.getPageable().getPageNumber());
         reservationResponseDto.setTotalPages(reservationPage.getTotalPages());
         return reservationResponseDto;
+    }
+
+    public boolean changeReservationStatus(Long id , String status) {
+        Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+        if(optionalReservation.isPresent() ){
+            Reservation existingReservation = optionalReservation.get();
+            if(Objects.equals(status,"Approve")){
+                existingReservation.setStatus(ReservationStatus.APPROVED);
+            }else{
+                existingReservation.setStatus(ReservationStatus.REJECTED);
+            }
+
+            reservationRepository.save(existingReservation);
+
+            Room existingRoom = existingReservation.getRoom();
+            existingRoom.setAvailable(false);
+
+            roomRepository.save(existingRoom);
+            return true;
+        }
+        return false;
     }
 }
