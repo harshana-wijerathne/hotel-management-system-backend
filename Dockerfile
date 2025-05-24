@@ -1,14 +1,7 @@
-# Use official OpenJDK base image
 FROM eclipse-temurin:17-jdk-jammy
-
-# Set working directory
 WORKDIR /app
-
-# Copy the built JAR file into the container
-COPY target/backend-0.0.1-SNAPSHOT.jar app.jar
-
-# Expose the port your app runs on
-EXPOSE 8080
-
-# Command to run the application
+COPY pom.xml .
+COPY src ./src
+RUN mvn package -DskipTests
+COPY target/backend-0.0.0.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
