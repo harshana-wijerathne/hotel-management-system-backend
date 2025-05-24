@@ -3,5 +3,6 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn package -DskipTests
-COPY target/backend-0.0.0.jar app.jar
+# The actual JAR name might include the version (e.g., backend-0.0.0.jar)
+COPY target/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
