@@ -11,6 +11,7 @@ import site.wijerathne.harshana.backend.entity.Room;
 import site.wijerathne.harshana.backend.enums.ReservationStatus;
 import site.wijerathne.harshana.backend.repository.ReservationRepository;
 import site.wijerathne.harshana.backend.repository.RoomRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import javax.swing.plaf.PanelUI;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public static final int SEARCH_RESULT_PER_PAGE = 4;
 
@@ -54,6 +56,12 @@ public class ReservationServiceImpl implements ReservationService {
             existingRoom.setAvailable(false);
 
             roomRepository.save(existingRoom);
+
+            // Broadcast the updated reservation to all subscribers
+            messagingTemplate.convertAndSend(
+                    "/topic/reservations",
+                    existingReservation.getReservationDto()
+            );
             return true;
         }
         return false;
